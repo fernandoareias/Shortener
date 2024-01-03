@@ -1,0 +1,83 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <DockerComposeProjectPath>../../docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>6707635d-ae67-4b0c-a8c9-c73b9bff1cab</UserSecretsId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Encurtador.API' " />
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="3.1.2-dev-02097" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.1-dev-10370" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="6.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.7.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="6.0.25" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.25" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.22.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
+    <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.25" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Configurations\" />
+    <None Remove="Controllers\v1\" />
+    <None Remove="Data\" />
+    <None Remove="Data\Repositories\" />
+    <None Remove="Data\Proxy\" />
+    <None Remove="Models\" />
+    <None Remove="Views\" />
+    <None Remove="Views\v1\" />
+    <None Remove="Controllers\Common\" />
+    <None Remove="Views\Common\" />
+    <None Remove="Data\Interfaces\" />
+    <None Remove="Data\Repositories\Interfaces\" />
+    <None Remove="Models\Common\" />
+    <None Remove="DTOs\" />
+    <None Remove="Services\" />
+    <None Remove="Services\Interfaces\" />
+    <None Remove="Models\ValueObjects\" />
+    <None Remove="Models\ValueObjects\Common\" />
+    <None Remove="Options\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\v1\" />
+    <Folder Include="Data\" />
+    <Folder Include="Data\Repositories\" />
+    <Folder Include="Data\Proxy\" />
+    <Folder Include="Models\" />
+    <Folder Include="Views\" />
+    <Folder Include="Views\v1\" />
+    <Folder Include="Controllers\Common\" />
+    <Folder Include="Views\Common\" />
+    <Folder Include="Data\Interfaces\" />
+    <Folder Include="Data\Repositories\Interfaces\" />
+    <Folder Include="Models\Common\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Models\ValueObjects\" />
+    <Folder Include="Models\ValueObjects\Common\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Options\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Options\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Options\**" />
+  </ItemGroup>
+</Project>
