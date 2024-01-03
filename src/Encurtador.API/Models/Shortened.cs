@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Encurtador.API.Models
 {
-    public class Shortened : Entity
+    public class Shortened : AggregateRoot
     {
 
         protected Shortened()

@@ -64,7 +64,6 @@
     <Folder Include="Views\Common\" />
     <Folder Include="Data\Interfaces\" />
     <Folder Include="Data\Repositories\Interfaces\" />
-    <Folder Include="Models\Common\" />
     <Folder Include="DTOs\" />
     <Folder Include="Services\" />
     <Folder Include="Services\Interfaces\" />
