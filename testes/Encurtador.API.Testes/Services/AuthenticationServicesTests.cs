@@ -21,11 +21,11 @@ namespace Encurtador.API.Testes.Services
             var companyRepository = new Mock<ICompanyRepository>();
             var log = new Mock<ILogger<AuthenticationServices>>();
 
-           var service = new AuthenticationServices(userRepository.Object, companyRepository.Object, log.Object);
+            var service = new AuthenticationServices(userRepository.Object, companyRepository.Object, log.Object);
 
             var response = await service.Authenticate("teste@gmail.com", password);
 
-            Assert.True(response is OkObjectResult);
+            Assert.NotNull(response);
 
         }
 
@@ -44,7 +44,7 @@ namespace Encurtador.API.Testes.Services
 
             var response = await service.Authenticate("teste@gmail.com", password);
 
-            Assert.True(response is UnauthorizedResult);
+            Assert.Null(response);
 
         }
 
@@ -64,7 +64,7 @@ namespace Encurtador.API.Testes.Services
 
             var response = await service.Authenticate("teste@gmail.com", "test123");
 
-            Assert.True(response is UnauthorizedResult);
+            Assert.Null(response);
 
         }
 
@@ -85,7 +85,7 @@ namespace Encurtador.API.Testes.Services
 
             var response = await service.Register("teste@gmail.com", "test123", "93790898000120");
 
-            Assert.True(response is OkObjectResult);
+            Assert.NotNull(response);
         }
 
         [Fact(DisplayName = "Not should register user when already exists.")]
@@ -104,7 +104,7 @@ namespace Encurtador.API.Testes.Services
 
             var response = await service.Register("teste@gmail.com", "test123", "93790898000120");
 
-            Assert.True(response is BadRequestResult);
+            Assert.Null(response);
         }
 
         [Fact(DisplayName = "Not should register when company not exists.")]
@@ -123,7 +123,7 @@ namespace Encurtador.API.Testes.Services
 
             var response = await service.Register("teste@gmail.com", "test123", "93790898000120");
 
-            Assert.True(response is BadRequestResult);
+            Assert.Null(response);
         }
     }
 }

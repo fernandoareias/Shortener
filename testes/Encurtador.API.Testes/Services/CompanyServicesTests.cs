@@ -23,7 +23,7 @@ namespace Encurtador.API.Tests.Services
             var request = new CompanyDTO() { Name = "Teste company", CNPJ = "93790898000120" };
             var response = await services.Create(request);
 
-            Assert.True(response is CreatedResult);
+            Assert.NotNull(response?.Data);
         }
 
         [Fact(DisplayName = "Not should create company when already exists.")]
@@ -38,7 +38,7 @@ namespace Encurtador.API.Tests.Services
             var request = new CompanyDTO() { Name = "Teste company", CNPJ = "93790898000120" };
             var response = await services.Create(request);
 
-            Assert.True(response is BadRequestResult);
+            Assert.Null(response);
         }
     }
 }

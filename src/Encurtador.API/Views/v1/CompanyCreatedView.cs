@@ -4,6 +4,7 @@ using Encurtador.API.Models;
 
 namespace Encurtador.API.Views.v1
 {
+    [DataContract]
     public class CompanyCreatedView
     {
 

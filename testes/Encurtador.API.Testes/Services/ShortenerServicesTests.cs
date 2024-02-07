@@ -23,7 +23,7 @@ namespace Encurtador.API.Tests.Services
             shortenerRepository.Setup(c => c.GetByCode(It.IsAny<string>())).ReturnsAsync(new Shortened("https://google.com", new MongoDB.Bson.ObjectId("65837c191499e44a497d4235")));
             shortenerRepository.Setup(c => c.unitOfWork.Commit()).ReturnsAsync(true);
             var cacheRedis = new Mock<IDistributedCache>();
-            var logRedis = new Mock<ILogger<RedisProxy>>(); 
+            var logRedis = new Mock<ILogger<RedisProxy>>();
 
             var services = new ShortenerServices(
                 authenticationServices.Object,
@@ -34,7 +34,7 @@ namespace Encurtador.API.Tests.Services
 
             var result = await services.Burn("0478C6D89");
 
-            Assert.True(result is RedirectResult);
+            Assert.False(string.IsNullOrWhiteSpace(result));
         }
 
 
@@ -56,7 +56,7 @@ namespace Encurtador.API.Tests.Services
 
             var result = await services.Burn("0478C6D89");
 
-            Assert.True(result is NotFoundObjectResult);
+            Assert.Null(result);
         }
 
 
@@ -80,9 +80,7 @@ namespace Encurtador.API.Tests.Services
                 logRedis.Object
             );
 
-            var result = await services.Burn("0478C6D89");
-
-            Assert.True(result is BadRequestObjectResult);
+            await Assert.ThrowsAsync<Microsoft.AspNetCore.Http.BadHttpRequestException>(() => services.Burn("0478C6D89"));
         }
 
 
@@ -108,7 +106,7 @@ namespace Encurtador.API.Tests.Services
             var request = new ShortenerDTO { Url = "https://google.com.br" };
             var result = await services.Create(request, new Mock<HttpContext>().Object);
 
-            Assert.True(result is CreatedResult);
+            Assert.NotNull(result?.Data);
         }
 
         [Fact(DisplayName = "Not should create shortened when userId not found.")]
@@ -131,9 +129,7 @@ namespace Encurtador.API.Tests.Services
             );
 
             var request = new ShortenerDTO { Url = "https://google.com.br" };
-            var result = await services.Create(request, new Mock<HttpContext>().Object);
-
-            Assert.True(result is UnauthorizedResult);
+            await Assert.ThrowsAsync<System.UnauthorizedAccessException>(() => services.Create(request, new Mock<HttpContext>().Object));
         }
     }
 }

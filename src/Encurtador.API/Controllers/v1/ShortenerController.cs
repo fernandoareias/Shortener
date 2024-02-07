@@ -6,7 +6,7 @@ using Encurtador.API.DTOs;
 using Encurtador.API.Models;
 using Encurtador.API.Services.Interfaces;
 using Encurtador.API.Views.Common;
-using Encurtador.API.Views.v1; 
+using Encurtador.API.Views.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
@@ -14,10 +14,10 @@ using MongoDB.Bson;
 
 namespace Encurtador.API.Controllers;
 
-[ApiVersion("1")] 
+[ApiVersion("1")]
 [Route("api/v{version:apiVersion}")]
 [Produces("application/json")]
-[Consumes("application/json")] 
+[Consumes("application/json")]
 [ApiController]
 
 public class ShortenerController : BaseController
@@ -50,7 +50,13 @@ public class ShortenerController : BaseController
     [ProducesResponseType(500, Type = typeof(BaseView<ShortenedCreateView>))]
     [Authorize]
     public async Task<IActionResult> Create([FromBody] ShortenerDTO request)
-        => await Exec("SHORTENER", $"URL => {request.Url}", async () => await _shortenerServices.Create(request, HttpContext));
+        => await Exec("SHORTENER", $"URL => {request.Url}",
+        async () =>
+        {
+            var response = await _shortenerServices.Create(request, HttpContext);
+
+            return Created(response!.Data!.Url, response);
+        });
 
 
 
@@ -69,11 +75,16 @@ public class ShortenerController : BaseController
     /// <response code="302">Redirect to origin url</response>
     /// <response code="404">Return if id not exists</response>
     /// <response code="500">Return error</response> 
-    [HttpGet("burn/{code}")] 
+    [HttpGet("burn/{code}")]
     [ProducesResponseType(302)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
     public async Task<IActionResult> Burn(string code)
-        => await Exec("BURN", $"ID => {code}", async () => await _shortenerServices.Burn(code)); 
+        => await Exec("BURN", $"ID => {code}", async () =>
+        {
+            var response = await _shortenerServices.Burn(code);
+
+            return Redirect(response);
+        });
 }
 

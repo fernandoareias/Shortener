@@ -24,30 +24,30 @@ namespace Encurtador.API.Services
             _authenticationService = authenticationService;
         }
 
-        public async Task<IActionResult> Burn(string code)
+        public async Task<string> Burn(string code)
         {
             var entity = await _encurtadorRepository.GetByCode(code);
 
             if (entity is null)
-                return new NotFoundObjectResult(new BaseView<object>(System.Net.HttpStatusCode.NotFound, "Error", null, "Link not found"));
+                return null;
 
             if (entity.Burned)
-                return new BadRequestObjectResult(new BaseView<object>(System.Net.HttpStatusCode.NotFound, "Error", null, "Code has already be burned"));
+                throw new BadHttpRequestException("Code has already be burned");
 
             entity!.Burn();
 
             _encurtadorRepository.Update(entity);
             await _encurtadorRepository.unitOfWork.Commit();
 
-            return new RedirectResult(entity.Url);
+            return entity.Url;
         }
 
-        public async Task<IActionResult> Create(ShortenerDTO request, HttpContext context)
+        public async Task<BaseView<ShortenedCreateView>> Create(ShortenerDTO request, HttpContext context)
         {
             var userId = _authenticationService.GetClaimValue(context, ClaimTypes.NameIdentifier);
 
             if (string.IsNullOrWhiteSpace(userId))
-                return new UnauthorizedResult();
+                throw new UnauthorizedAccessException();
 
             var entity = new Shortened(request.Url, ObjectId.Parse(userId));
 
@@ -55,7 +55,7 @@ namespace Encurtador.API.Services
             await _encurtadorRepository.unitOfWork.Commit();
             var view = new ShortenedCreateView(entity);
 
-            return new CreatedResult(view.Url, new BaseView<ShortenedCreateView>(System.Net.HttpStatusCode.Created, "Entity created.", view));
+            return new BaseView<ShortenedCreateView>(System.Net.HttpStatusCode.Created, "Entity created.", view);
         }
     }
 }

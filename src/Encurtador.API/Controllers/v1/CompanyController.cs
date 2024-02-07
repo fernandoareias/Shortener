@@ -14,7 +14,7 @@ namespace Encurtador.API.Controllers.v1
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/company")]
     [Produces("application/json")]
-    [Consumes("application/json")] 
+    [Consumes("application/json")]
     [ApiController]
 
     public class CompanyController : BaseController
@@ -47,11 +47,16 @@ namespace Encurtador.API.Controllers.v1
         /// <response code="201">Return new url</response>
         /// <response code="500">Return error</response> 
         [HttpPost]
-            [ProducesResponseType(201, Type = typeof(BaseView<ShortenedCreateView>))]
-            [ProducesResponseType(500, Type = typeof(BaseView<ShortenedCreateView>))]
-            public async Task<IActionResult> Create([FromBody] CompanyDTO request)
+        [ProducesResponseType(201, Type = typeof(BaseView<ShortenedCreateView>))]
+        [ProducesResponseType(500, Type = typeof(BaseView<ShortenedCreateView>))]
+        public async Task<IActionResult> Create([FromBody] CompanyDTO request)
                 => await Exec("Create company", $"Company => {request.CNPJ}",
-                    async () => await _companyServices.Create(request));
+                    async () =>
+                    {
+                        var response = await _companyServices.Create(request);
+
+                        return response is null ? BadRequest(new BaseView<ShortenedCreateView>(System.Net.HttpStatusCode.BadRequest, "This company already exists!", null)) : Created(response!.Data!.Url, response);
+                    });
     }
 }
 

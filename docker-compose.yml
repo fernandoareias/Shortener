@@ -49,8 +49,8 @@ services:
     networks:
       - common.network
     depends_on:
-      - mongo1   
-      
+      - mongo1
+
   prometheus:
     build:
       context: ./prometheus

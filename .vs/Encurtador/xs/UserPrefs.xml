@@ -1,0 +1,36 @@
+﻿<Properties StartupConfiguration="{09110692-58C8-4D50-96DD-963A55BDD73F}|Encurtador.API">
+  <MonoDevelop.Ide.ItemProperties.src.Shortener.API PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="src/Encurtador.API/Controllers/v1/AuthenticationController.cs">
+    <Files>
+      <File FileName="src/Encurtador.API/Controllers/v1/AuthenticationController.cs" Line="65" Column="12" />
+      <File FileName="src/Encurtador.API/Services/AuthenticationServices.cs" Line="75" Column="68" />
+      <File FileName="src/Encurtador.API/Views/v1/CompanyCreatedView.cs" Line="7" Column="18" />
+      <File FileName="src/Encurtador.API/Services/Interfaces/IAuthenticationServices.cs" Line="10" Column="31" />
+      <File FileName="src/Encurtador.API/Views/v1/UserAuthenticateView.cs" Line="7" Column="38" />
+      <File FileName="src/Encurtador.API/Views/v1/UserRegisterView.cs" Line="31" Column="6" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Encurtador">
+            <Node name="src">
+              <Node name="Shortener.API">
+                <Node name="Controllers">
+                  <Node name="v1">
+                    <Node name="AuthenticationController.cs" selected="True" />
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+</Properties>

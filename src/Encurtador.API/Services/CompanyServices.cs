@@ -18,12 +18,12 @@ namespace Encurtador.API.Services
             _companyRepository = companyRepository;
         }
 
-        public async Task<IActionResult> Create(CompanyDTO request)
+        public async Task<BaseView<CompanyCreatedView>?> Create(CompanyDTO request)
         {
             var company = await _companyRepository.GetByCNPJ(request.CNPJ);
 
             if (company is not null)
-                return new BadRequestResult();
+                return null;
 
             var entity = new Company(request.Name, new Models.ValueObjects.CNPJ(request.CNPJ));
 
@@ -31,8 +31,7 @@ namespace Encurtador.API.Services
             await _companyRepository.unitOfWork.Commit();
             var view = new CompanyCreatedView(entity);
 
-            return new CreatedResult(view.Url, new BaseView<CompanyCreatedView>(System.Net.HttpStatusCode.Created, "Entity created.", view));
-
+            return new BaseView<CompanyCreatedView>(System.Net.HttpStatusCode.Created, "Entity created.", view);
         }
     }
 }

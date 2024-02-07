@@ -8,7 +8,8 @@ using Encurtador.API.Models;
 using Encurtador.API.Models.ValueObjects;
 using Encurtador.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens; 
+using Microsoft.IdentityModel.Tokens;
+using Shortener.API.Views.v1;
 
 namespace Encurtador.API.Services
 {
@@ -25,19 +26,19 @@ namespace Encurtador.API.Services
             _logger = logger;
         }
 
-        public async Task<IActionResult> Authenticate(string email, string password)
+        public async Task<UserAuthenticateView?> Authenticate(string email, string password)
         {
             var user = await _userRepository.GetByEmail(email);
 
             if (user == null)
-                return new UnauthorizedResult();
+                return null;
 
-            if(!user.Password.Compare(password))
-                return new UnauthorizedResult();
+            if (!user.Password.Compare(password))
+                return null;
 
             var token = GenerateJwt(user);
 
-            return new OkObjectResult(new {token, user.Email });
+            return new UserAuthenticateView(token, user.Email.Endereco);
 
         }
 
@@ -51,17 +52,17 @@ namespace Encurtador.API.Services
 
         }
 
-        public async Task<IActionResult> Register(string email, string password, string cnpj)
+        public async Task<UserRegisterView?> Register(string email, string password, string cnpj)
         {
             var user = await _userRepository.GetByEmail(email);
 
             if (user != null)
-                return new BadRequestResult();
+                return null;
 
             var company = await _companyRepository.GetByCNPJ(cnpj);
 
             if (company == null)
-                return new BadRequestResult();
+                return null;
 
             user = new Models.User(new Email(email), new Password(password), company);
 
@@ -71,7 +72,7 @@ namespace Encurtador.API.Services
 
             var token = GenerateJwt(user);
 
-            return new OkObjectResult(new { token, user.Email });
+            return new UserRegisterView(token, user.Email.Endereco);
         }
 
 

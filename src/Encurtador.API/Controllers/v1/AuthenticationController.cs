@@ -6,6 +6,7 @@ using Encurtador.API.Services.Interfaces;
 using Encurtador.API.Views.Common;
 using Encurtador.API.Views.v1;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 
 namespace Encurtador.API.Controllers.v1
 {
@@ -47,7 +48,12 @@ namespace Encurtador.API.Controllers.v1
         [ProducesResponseType(500, Type = typeof(BaseView<ShortenedCreateView>))]
         public async Task<IActionResult> SignIn([FromBody] SignInDTO request)
             => await Exec("SIGN-IN", $"E-mail => {request.Email}",
-                        async () => await _authenticationServices.Authenticate(request.Email, request.Password));
+                        async () =>
+                        {
+                            var result = await _authenticationServices.Authenticate(request.Email, request.Password);
+
+                            return result is null ? Unauthorized() : Ok(result);
+                        });
 
 
         // POST api/v1/authentication/sign-up
@@ -74,7 +80,11 @@ namespace Encurtador.API.Controllers.v1
             [ProducesResponseType(500, Type = typeof(BaseView<ShortenedCreateView>))]
             public async Task<IActionResult> SignUp([FromBody] AuthenticationDTO request)
                 => await Exec("SIGN-UP", $"E-mail => {request.Email}",
-                            async () => await _authenticationServices.Register(request.Email, request.Password, request.CNPJ));
+                            async () =>
+                            {
+                                var result  = await _authenticationServices.Register(request.Email, request.Password, request.CNPJ);
+                                return result is null ? Unauthorized() : Ok(result);
+                            });
         }
 }
 
